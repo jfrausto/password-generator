@@ -73,6 +73,8 @@ var specialChars = [
 
 // Write password to the #password input
 function writePassword() {
+  // if want to generate new password, reset master array to empty
+  masterArray = [];
   // begin series of prompts
   var prompts = displayPrompts();
   //  will return boolean; true if ALL VALID INPUT; or undefined for canceled prompts
@@ -206,6 +208,37 @@ function displayPrompts() {
   // }
   // console.log("WHERES MY ALERT");
   // alert("You need to pick at least ONE character type preference!");
+}
+
+// GENERATE THE PASSWORD
+function generatePassword() {
+  // returns a password string
+
+  var userPool = buildPool(); //  build the preferred pool of characters array
+  console.log(userPool);
+}
+
+function buildPool() {
+  // build user defined pool of characters dynamically
+  if (lowerCasePref === "y") {
+    masterArray = masterArray.concat(lowerAlphabet);
+  }
+  if (upperCasePref === "y") {
+    // loop through lowercase alphabet and convert
+    var upperAlphabet = [];
+    for (var i = 0; i < lowerAlphabet.length; i++) {
+      upperAlphabet.push(lowerAlphabet[i].toUpperCase());
+    }
+    masterArray = masterArray.concat(upperAlphabet);
+  }
+  if (numericPref === "y") {
+    masterArray = masterArray.concat(numerical);
+  }
+  if (specialPref === "y") {
+    masterArray = masterArray.concat(specialChars);
+  }
+  console.log(masterArray.length); // should display the current built length of pool
+  return masterArray; // returns built array
 }
 
 // function to check validity of length; or yes or no prompts.
