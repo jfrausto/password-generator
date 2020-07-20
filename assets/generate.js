@@ -1,5 +1,5 @@
 // Assignment Code
-// element references/pointers
+// button element reference object
 var generateBtn = document.querySelector("#generate");
 // a list of vars that hold each preference
 var passwordLength;
@@ -7,10 +7,7 @@ var specialPref;
 var lowerCasePref;
 var upperCasePref;
 var numericPref;
-// i think we are going to need a MASTER array containing everything we can randomize from.
-
 var masterArray = []; // holds the array of characters we can pick random from, according to preference
-
 var lowerAlphabet = [
   "a",
   "b",
@@ -39,12 +36,8 @@ var lowerAlphabet = [
   "y",
   "z",
 ];
-// or we could add an UPPERCASE array, if we don't want to deal with .toUpperCase()
-// could still have a for loop with toUppercase()
 var numerical = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
-// maybe easier to make these into strings not numbers
 var specialChars = [
-  " ",
   "!",
   '"',
   "#",
@@ -66,7 +59,6 @@ var specialChars = [
   "_",
   "`",
   "{",
-  "|",
   "}",
   "~",
 ];
@@ -75,19 +67,19 @@ var specialChars = [
 function writePassword() {
   // if want to generate new password, reset master array to empty
   masterArray = [];
+  passwordLength = 0;
   // begin series of prompts
   var prompts = displayPrompts();
   //  will return boolean; true if ALL VALID INPUT; or undefined for canceled prompts
-  console.log(prompts + " prompt validity");
 
   // if we did NOT CANCEL at any point, then generate the password!
   if (!(prompts === undefined)) {
     var password = generatePassword();
     var passwordText = document.querySelector("#password"); // textarea element reference
-
     passwordText.value = password;
+  } else {
+    console.log("user canceled password generation");
   }
-  //  could display something here to say, "NVM no password then..." with an ELSE
 }
 
 function displayPrompts() {
@@ -104,13 +96,14 @@ function displayPrompts() {
       return;
     }
     passwordLength = parseInt(passwordLength); //convert to integer
+    // check for integer
     console.log(passwordLength + " length");
     if (validChecker(passwordLength)) {
       // tells us if we have valid input
       validInput = true;
     } else {
       // if we don't, while loop executes again and re-prompts
-      alert("enter a number from 8-128");
+      alert("Enter a number from 8-128");
     }
   }
 
@@ -194,20 +187,19 @@ function displayPrompts() {
         alert("Enter y or n");
       }
     }
-    // console.log("WE MADE IT");
     if (pickPref) {
+      // if user picked at least one, return knowing you have valid input
       return true;
-    }
-    // console.log("WHERES MY ALERT");
+    } // else, user is alerted and re-prompted
     alert("You need to pick at least ONE character type preference!");
   }
-  // passed all validity and prompt checks. now pass on info write the generator
-  // console.log("WE MADE IT");
-  // if (pickPref) {
-  //   return true;
-  // }
-  // console.log("WHERES MY ALERT");
-  // alert("You need to pick at least ONE character type preference!");
+}
+// THIS FUNCTION WAS TAKEN FROM JAVASCRIPT MDN DOCS
+// (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random)
+function getRandomIntInclusive(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min; //The min and max values are inclusive
 }
 
 // GENERATE THE PASSWORD
@@ -216,6 +208,15 @@ function generatePassword() {
 
   var userPool = buildPool(); //  build the preferred pool of characters array
   console.log(userPool);
+  var result = ""; // start with an empty string
+  // append the empty string at each iteration with a randomly generated index in the userPool[]
+  console.log(userPool.length - 1);
+  console.log(passwordLength);
+  for (var j = 0; j < passwordLength; j++) {
+    result = result + userPool[getRandomIntInclusive(0, userPool.length - 1)];
+  }
+  console.log(result + " <<< password");
+  return result;
 }
 
 function buildPool() {
