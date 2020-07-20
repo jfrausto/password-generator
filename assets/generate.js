@@ -71,7 +71,7 @@ var specialChars = [
 function writePassword() {
   // begin series of prompts
   var prompts = displayPrompts(); //  will return boolean; true if ALL good INPUT; or undefined for canceled prompts
-  console.log(prompts);
+  console.log(prompts + " prompt validity");
 
   // if we did NOT CANCEL at any point, then generate the password!
   if (!(prompts === undefined)) {
@@ -92,13 +92,12 @@ function displayPrompts() {
     var passwordLength = prompt(
       "How many characters long do you want your password to be? (8-128)"
     );
-
     // if you press cancel, stop prompting
     if (passwordLength === null) {
       return;
     }
     passwordLength = parseInt(passwordLength); //convert to integer
-    console.log(passwordLength);
+    console.log(passwordLength + " length");
     if (validChecker(passwordLength)) {
       // tells us if we have valid input
       validInput = true;
@@ -107,6 +106,7 @@ function displayPrompts() {
       alert("enter a number from 8-128");
     }
   }
+  //   put the while-loop here for preference check!!!!!!!!!
   //   another while loop here for next valid check
   //   REMEMBER WE NEED TO PICK AT LEAST ONE PREFERENCE!
   validInput = false; // we start false until proven true!!
@@ -118,7 +118,7 @@ function displayPrompts() {
       //if you cancel, stop prompting
       return;
     }
-    console.log(lowerCasePref);
+    console.log(lowerCasePref + " lowercase");
     if (validChecker(lowerCasePref)) {
       // check valid input
       validInput = true;
@@ -138,8 +138,26 @@ function displayPrompts() {
     if (upperCasePref === null) {
       return;
     }
-    console.log(upperCasePref);
+    console.log(upperCasePref + " uppercase");
     if (validChecker(upperCasePref)) {
+      validInput = true;
+      if (lowerCasePref == "y") {
+        pickPref = true;
+      } // true only when they picked a preference
+    } else {
+      alert("Enter y or n");
+    }
+  }
+  // next prompt, next while loop
+  validInput = false;
+  while (!validInput) {
+    var numericPref = prompt("Do you want to include numbers? (y or n)");
+    if (numericPref === null) {
+      // returns if canceled.
+      return;
+    }
+    console.log(numericPref + " numeric");
+    if (validChecker(numericPref)) {
       validInput = true;
       if (lowerCasePref == "y") {
         pickPref = true;
