@@ -1,12 +1,11 @@
-// Assignment Code
 // button element reference object
 var generateBtn = document.querySelector("#generate");
 // a list of vars that hold each preference
-var passwordLength;
-var specialPref;
-var lowerCasePref;
-var upperCasePref;
-var numericPref;
+var passwordLength; //  user defined length of password
+var specialPref; //  special character choice
+var lowerCasePref; //  lower case letters choice
+var upperCasePref; //  upper case letters choice
+var numericPref; //  include numbers choice
 var masterArray = []; // holds the array of characters we can pick random from, according to preference
 var lowerAlphabet = [
   "a",
@@ -63,28 +62,29 @@ var specialChars = [
   "~",
 ];
 
-// Write password to the #password input
+// Write password to the #password text area
 function writePassword() {
-  // if want to generate new password, reset master array to empty
+  // if wants to generate new password, reset master array to empty
   masterArray = [];
   passwordLength = 0;
   // begin series of prompts
-  var prompts = displayPrompts();
   //  will return boolean; true if ALL VALID INPUT; or undefined for canceled prompts
-
+  var prompts = displayPrompts();
   // if we did NOT CANCEL at any point, then generate the password!
   if (!(prompts === undefined)) {
     var password = generatePassword();
-    var passwordText = document.querySelector("#password"); // textarea element reference
-    passwordText.value = password;
+    var passwordText = document.querySelector("#password");
+    passwordText.value = password; // assign the password to the elements value to display
   } else {
-    console.log("user canceled password generation");
+    //generation was canceled
+    alert("Canceled password generator!");
   }
 }
 
+//  this function contains while-loops to re-prompt the user in cases of bad input
 function displayPrompts() {
   var validInput = false; // initialize validInput flag to traverse multiple while loops
-  var pickPref = false; //  have not picked (0) preferences so far, we will need at least one!
+  var pickPref = false; //  have not picked preferences so far, we will need at least one!
   // while-loop for password length
   while (!validInput) {
     // ask for password length
@@ -97,7 +97,6 @@ function displayPrompts() {
     }
     passwordLength = parseInt(passwordLength); //convert to integer
     // check for integer
-    console.log(passwordLength + " length");
     if (validChecker(passwordLength)) {
       // tells us if we have valid input
       validInput = true;
@@ -110,27 +109,27 @@ function displayPrompts() {
   while (!pickPref) {
     // this while-loop controls a re-prompt;
     // need to pick at least one preference (or cancel) to break out of loop
-    validInput = false; // we start false until proven true!!
+    validInput = false; // we start always start false until proven true!
+    // "character type" prompt
     while (!validInput) {
       lowerCasePref = prompt(
         "Do you want to include LOWER CASE letters? (y or n)"
       );
       if (lowerCasePref === null) {
-        //if you cancel, stop prompting
+        // if you press cancel, stop prompting
         return;
       }
-      console.log(lowerCasePref + " lowercase");
       if (validChecker(lowerCasePref)) {
         // check valid input
         validInput = true;
         if (lowerCasePref == "y") {
-          pickPref = true; // true only when they picked a preference
+          pickPref = true; // "picked a preference" flag
         }
       } else {
         alert("Enter y or n");
       }
     }
-    // next prompt, next while loop
+    // next character type prompt
     validInput = false;
     while (!validInput) {
       upperCasePref = prompt(
@@ -139,12 +138,11 @@ function displayPrompts() {
       if (upperCasePref === null) {
         return;
       }
-      console.log(upperCasePref + " uppercase");
       if (validChecker(upperCasePref)) {
         validInput = true;
         if (upperCasePref == "y") {
           pickPref = true;
-        } // true only when they picked a preference
+        } // "picked a preference" flag
       } else {
         alert("Enter y or n");
       }
@@ -157,12 +155,11 @@ function displayPrompts() {
         // returns if canceled.
         return;
       }
-      console.log(numericPref + " numeric");
       if (validChecker(numericPref)) {
         validInput = true;
         if (numericPref == "y") {
           pickPref = true;
-        } // true only when they picked a preference
+        } // "picked a preference" flag
       } else {
         alert("Enter y or n");
       }
@@ -177,12 +174,11 @@ function displayPrompts() {
         // returns if canceled.
         return;
       }
-      console.log(specialPref + " special chars");
       if (validChecker(specialPref)) {
         validInput = true;
         if (specialPref == "y") {
           pickPref = true;
-        } // true only when they picked a preference
+        } // "picked a preference" flag
       } else {
         alert("Enter y or n");
       }
@@ -202,30 +198,26 @@ function getRandomIntInclusive(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min; //The min and max values are inclusive
 }
 
-// GENERATE THE PASSWORD
 function generatePassword() {
   // returns a password string
 
   var userPool = buildPool(); //  build the preferred pool of characters array
-  console.log(userPool);
   var result = ""; // start with an empty string
   // append the empty string at each iteration with a randomly generated index in the userPool[]
-  console.log(userPool.length - 1);
-  console.log(passwordLength);
   for (var j = 0; j < passwordLength; j++) {
     result = result + userPool[getRandomIntInclusive(0, userPool.length - 1)];
   }
-  console.log(result + " <<< password");
   return result;
 }
 
 function buildPool() {
   // build user defined pool of characters dynamically
+  // by concatenating an empty array with if-checks.
   if (lowerCasePref === "y") {
     masterArray = masterArray.concat(lowerAlphabet);
   }
   if (upperCasePref === "y") {
-    // loop through lowercase alphabet and convert
+    // loop through lowercase alphabet and convert to upper case
     var upperAlphabet = [];
     for (var i = 0; i < lowerAlphabet.length; i++) {
       upperAlphabet.push(lowerAlphabet[i].toUpperCase());
@@ -238,8 +230,7 @@ function buildPool() {
   if (specialPref === "y") {
     masterArray = masterArray.concat(specialChars);
   }
-  console.log(masterArray.length); // should display the current built length of pool
-  return masterArray; // returns built array
+  return masterArray; // returns custom built array
 }
 
 // function to check validity of length; or yes or no prompts.
@@ -257,5 +248,5 @@ function validChecker(good) {
   }
 }
 
-// Add event listener to generate button
+// Add event listener to generate button; activates entire script
 generateBtn.addEventListener("click", writePassword);
