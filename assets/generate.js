@@ -7,60 +7,11 @@ var lowerCasePref; //  lower case letters choice
 var upperCasePref; //  upper case letters choice
 var numericPref; //  include numbers choice
 var masterArray = []; // holds the array of characters we can pick random from, according to preference
-var lowerAlphabet = [
-  "a",
-  "b",
-  "c",
-  "d",
-  "e",
-  "f",
-  "g",
-  "h",
-  "i",
-  "j",
-  "k",
-  "l",
-  "m",
-  "n",
-  "o",
-  "p",
-  "q",
-  "r",
-  "s",
-  "t",
-  "u",
-  "v",
-  "w",
-  "x",
-  "y",
-  "z",
-];
+var lowerAlphabet = ["a","b","c","d","e","f","g","h","i","j","k","l","m",
+                    "n","o","p","q","r","s","t","u","v","w","x","y","z",];
 var numerical = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
-var specialChars = [
-  "!",
-  '"',
-  "#",
-  "$",
-  "%",
-  "&",
-  "'",
-  "-",
-  ".",
-  "/",
-  ":",
-  ";",
-  "<",
-  "?",
-  "@",
-  "[",
-  "]",
-  "^",
-  "_",
-  "`",
-  "{",
-  "}",
-  "~",
-];
+var specialChars = ["!",'"',"#","$","%","&","'","-",".","/",":",";","<",
+                    "?","@","[","]","^","_","`","{","}","~",];
 
 // Write password to the #password text area
 function writePassword() {
